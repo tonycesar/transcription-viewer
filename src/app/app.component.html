@@ -1,15 +1,11 @@
 <style type="css">
 </style>
-<div class="toolbar" role="banner">
-  <span>Welcome</span>
-</div>
-
 <div class="content" role="main">
 
   <!-- Highlight Card -->
   <div class="card highlight-card card-small">
 
-    <span>{{ title }}</span>
+    <h1>{{ title }}</h1>
 
   </div>
 
@@ -22,18 +18,17 @@
     <input type='file' (change)="fileChanged($event)">
   </div>
   <div class="card-container">
-    <button class="card card-small" (click)="importDocument()" tabindex="0">
-      <span>Import File</span>
-    </button>
     <label >Items per page </label>
     <input type='number' (change)="itemsPerPageChanged($event)" value="1000">
   </div>
   <div class="card-container">
     <div>
-      <input type="checkbox" [checked]="typeTiming.selected" (change)="typeTiming.selected = !typeTiming.selected; loadContent()">
-      <label >{{ typeTiming.selected ? 'Time tracking' : 'Only Text'}}</label>
+      <input type="radio" name="typeTiming" value="tracking" checked
+      (change)="typeTiming.selected = true; loadContent()">Time tracking
+      <input type="radio" name="typeTiming" value="text"
+      (change)="typeTiming.selected = false; loadContent()">Only Text
     </div>
-    <div #content></div>
+    <div #content class="text-content"></div>
     <div *ngIf="typeTiming.selected">
       <a href="#" *ngFor="let page of pagination.pages, let i = index"
         (click)="pagination.current = i; showCurrentPage()"
@@ -49,9 +44,13 @@
   <div class="card-container">
     <label>Audio </label>
     <input type='file' (change)="audioChanged($event)">
-    <select class="form-control" id="allocation-algorithm" (change)="changePlayback($event)">
-      <option *ngFor="let vel of [1, 1.5, 1.75, 2, 2.25, 2.5]" [value]="vel">{{vel}}</option>
-    </select>
+    <div>
+      <ng-container *ngFor="let vel of [0.25, 0.5, 0.75, 1, 1.5, 1.75, 2, 2.25, 2.5]">
+        <input type="radio"
+        name="velocity" [value]="vel" [checked]="vel==1"
+        (change)="changePlayback($event)">x{{vel}}
+      </ng-container>
+    </div>
   </div>
   <div class="card-container">
     <audio #audio controls="true" style="width: 100%;"></audio>

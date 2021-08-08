@@ -42,6 +42,7 @@ export class AppComponent implements AfterViewInit {
   } = {total: 0, pages: [], current: 0, perPage: 1000};
   subTime: any;
   isRunning = false;
+  playbackRate = 1;
 
   constructor() {
 
@@ -61,6 +62,7 @@ export class AppComponent implements AfterViewInit {
 
   fileChanged($event: any) {
     this.file = $event.target.files[0];
+    this.importDocument();
   }
 
   importDocument() {
@@ -116,6 +118,7 @@ export class AppComponent implements AfterViewInit {
   audioChanged($event: any) {
     const urlObj = URL.createObjectURL( $event.target.files[0]);
     this.audioPlayer.nativeElement.src = urlObj;
+    this.audioPlayer.nativeElement.playbackRate  = this.playbackRate;
   }
 
   setCurrentTime(currentTime: number) {
@@ -158,7 +161,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   changePlayback($event: any) {
-    this.audioPlayer.nativeElement.playbackRate  = +$event.target.value
+    this.playbackRate = +$event.target.value;
+    this.audioPlayer.nativeElement.playbackRate  = +$event.target.value;
   }
 
   itemsPerPageChanged($event: any) {
